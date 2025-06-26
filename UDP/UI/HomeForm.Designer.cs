@@ -31,18 +31,31 @@
             this.buttonStartTest = new Sunny.UI.UIButton();
             this.buttonCloseLowerMachine = new Sunny.UI.UIButton();
             this.buttonEndTest = new Sunny.UI.UIButton();
+<<<<<<< HEAD
             this.tabControl1 = new System.Windows.Forms.TabControl();
+=======
+            this.panel1 = new Sunny.UI.UIPanel();
+            this.panel1.SuspendLayout();
+>>>>>>> 2632f6d1847636d5f8baa359cde7a7991b151c47
             this.SuspendLayout();
             // 
             // buttonStartTest
             // 
             this.buttonStartTest.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonStartTest.Font = new System.Drawing.Font("微软雅黑", 12F);
+<<<<<<< HEAD
             this.buttonStartTest.Location = new System.Drawing.Point(11, 11);
             this.buttonStartTest.Margin = new System.Windows.Forms.Padding(2);
             this.buttonStartTest.MinimumSize = new System.Drawing.Size(1, 1);
             this.buttonStartTest.Name = "buttonStartTest";
             this.buttonStartTest.Size = new System.Drawing.Size(89, 28);
+=======
+            this.buttonStartTest.Location = new System.Drawing.Point(12, 15);
+            this.buttonStartTest.Margin = new System.Windows.Forms.Padding(2);
+            this.buttonStartTest.MinimumSize = new System.Drawing.Size(1, 1);
+            this.buttonStartTest.Name = "buttonStartTest";
+            this.buttonStartTest.Size = new System.Drawing.Size(75, 28);
+>>>>>>> 2632f6d1847636d5f8baa359cde7a7991b151c47
             this.buttonStartTest.TabIndex = 45;
             this.buttonStartTest.Text = "开始测试";
             this.buttonStartTest.TipsFont = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -52,11 +65,19 @@
             // 
             this.buttonCloseLowerMachine.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonCloseLowerMachine.Font = new System.Drawing.Font("微软雅黑", 12F);
+<<<<<<< HEAD
             this.buttonCloseLowerMachine.Location = new System.Drawing.Point(335, 11);
             this.buttonCloseLowerMachine.Margin = new System.Windows.Forms.Padding(4);
             this.buttonCloseLowerMachine.MinimumSize = new System.Drawing.Size(2, 2);
             this.buttonCloseLowerMachine.Name = "buttonCloseLowerMachine";
             this.buttonCloseLowerMachine.Size = new System.Drawing.Size(109, 28);
+=======
+            this.buttonCloseLowerMachine.Location = new System.Drawing.Point(204, 15);
+            this.buttonCloseLowerMachine.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonCloseLowerMachine.MinimumSize = new System.Drawing.Size(2, 2);
+            this.buttonCloseLowerMachine.Name = "buttonCloseLowerMachine";
+            this.buttonCloseLowerMachine.Size = new System.Drawing.Size(81, 28);
+>>>>>>> 2632f6d1847636d5f8baa359cde7a7991b151c47
             this.buttonCloseLowerMachine.TabIndex = 41;
             this.buttonCloseLowerMachine.Text = "关闭上位机";
             this.buttonCloseLowerMachine.TipsFont = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -66,16 +87,25 @@
             // 
             this.buttonEndTest.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonEndTest.Font = new System.Drawing.Font("微软雅黑", 12F);
+<<<<<<< HEAD
             this.buttonEndTest.Location = new System.Drawing.Point(164, 11);
             this.buttonEndTest.Margin = new System.Windows.Forms.Padding(2);
             this.buttonEndTest.MinimumSize = new System.Drawing.Size(1, 1);
             this.buttonEndTest.Name = "buttonEndTest";
             this.buttonEndTest.Size = new System.Drawing.Size(93, 28);
+=======
+            this.buttonEndTest.Location = new System.Drawing.Point(105, 15);
+            this.buttonEndTest.Margin = new System.Windows.Forms.Padding(2);
+            this.buttonEndTest.MinimumSize = new System.Drawing.Size(1, 1);
+            this.buttonEndTest.Name = "buttonEndTest";
+            this.buttonEndTest.Size = new System.Drawing.Size(75, 28);
+>>>>>>> 2632f6d1847636d5f8baa359cde7a7991b151c47
             this.buttonEndTest.TabIndex = 46;
             this.buttonEndTest.Text = "结束测试";
             this.buttonEndTest.TipsFont = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.buttonEndTest.Click += new System.EventHandler(this.buttonEndTest_Click);
             // 
+<<<<<<< HEAD
             // tabControl1
             // 
             this.tabControl1.Location = new System.Drawing.Point(-4, 46);
@@ -83,11 +113,30 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(1115, 597);
             this.tabControl1.TabIndex = 47;
+=======
+            // panel1
+            // 
+            this.panel1.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.panel1.BackColor = System.Drawing.Color.Transparent;
+            this.panel1.Controls.Add(this.buttonStartTest);
+            this.panel1.Controls.Add(this.buttonEndTest);
+            this.panel1.Controls.Add(this.buttonCloseLowerMachine);
+            this.panel1.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.panel1.Location = new System.Drawing.Point(-3, -2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(7, 8, 7, 8);
+            this.panel1.MinimumSize = new System.Drawing.Size(1, 1);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1775, 820);
+            this.panel1.TabIndex = 57;
+            this.panel1.Text = null;
+            this.panel1.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+>>>>>>> 2632f6d1847636d5f8baa359cde7a7991b151c47
             // 
             // HomeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+<<<<<<< HEAD
             this.ClientSize = new System.Drawing.Size(1105, 645);
             this.Controls.Add(this.buttonCloseLowerMachine);
             this.Controls.Add(this.buttonEndTest);
@@ -96,6 +145,14 @@
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "HomeForm";
             this.Text = "Form1";
+=======
+            this.ClientSize = new System.Drawing.Size(1772, 820);
+            this.Controls.Add(this.panel1);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Name = "HomeForm";
+            this.Text = "Form1";
+            this.panel1.ResumeLayout(false);
+>>>>>>> 2632f6d1847636d5f8baa359cde7a7991b151c47
             this.ResumeLayout(false);
 
         }
@@ -104,7 +161,11 @@
         private Sunny.UI.UIButton buttonStartTest;
         private Sunny.UI.UIButton buttonCloseLowerMachine;
         private Sunny.UI.UIButton buttonEndTest;
+<<<<<<< HEAD
         private System.Windows.Forms.TabControl tabControl1;
+=======
+        private Sunny.UI.UIPanel panel1;
+>>>>>>> 2632f6d1847636d5f8baa359cde7a7991b151c47
     }
 }
 
