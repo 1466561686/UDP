@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using UDP.Interface;
 using UDP.timer;
 using UDP.Tools;
 
@@ -11,133 +12,96 @@ namespace UDP.UI
 {
     public partial class HomeForm : Form
     {
-        public timer.UltraHightAccurateTimer receiveTimer; // 定义定时器
-        private Channel_UDP channelUdp;
-        private Form form;
+        public static string PathDir = AppDomain.CurrentDomain.BaseDirectory;
+        public static string FilePathConfigUdp = PathDir + "\\ConfigFile\\BUS\\Device\\UDP\\UDPChannelConfig.csv"; //配置文件路径
 
-        private DataForm tab_data;
+        public UltraHighAccurateTimer ReceiveTimer; // 定义定时器
+        private Dictionary<int, DataForm> dataForms = new Dictionary<int, DataForm>();
+        private Dictionary<int, ChannelUdp> udpChannels = new Dictionary<int, ChannelUdp>();
 
         public HomeForm()
         {
             InitializeComponent();
-            InitializeChannel(); // 先初始化通道
             InitView(); // 初始化视图
-            InitTimer(); // 调用定时器
         }
 
-        #region 初始化配置
-
+        //InitView 方法中的 Channel_UDP 实例化部分，使用配置文件获取端口参数
         private void InitView()
         {
-            for (int i = 0; i < 16; i++)
+            tabControl.TabPages.Clear();
+            dataForms.Clear();
+            udpChannels.Clear();
+            LoadConfig.LoadUdp();
+
+            foreach (var channel in LoadConfig.UdpChannels.Where(c => c.Id >= 0 && c.Id < 16))
             {
-                var tb = new TabPage
+                int i = channel.Id;
+                udpChannels[i] = channel;
+
+                var tabPage = new TabPage
                 {
                     Name = $"ch{i}",
                     Text = $"ch{i}"
                 };
-                var dataForm = new DataForm(i)
+                var dataForm = new DataForm(i, channel, tabControl)
                 {
                     FormBorderStyle = FormBorderStyle.None,
                     TopLevel = false,
                     Dock = DockStyle.Fill
                 };
-                tb.Controls.Add(dataForm);
+                dataForms[i] = dataForm;
+
+                tabPage.Controls.Add(dataForm);
                 dataForm.Show();
-                tabControl1.TabPages.Add(tb); // Ensure tab_data is a TabControl, not a DataForm
+                tabControl.TabPages.Add(tabPage);
             }
         }
 
-        private void InitTimer()
-        {
-            // 使用自定义高精度定时器
-            receiveTimer = new UltraHightAccurateTimer();
-            receiveTimer.Interval = 10;
-            receiveTimer.Tick += new UltraHightAccurateTimer.ManualTimerEventHandler(ReceiveTimer_Tick);
-        }
-
-        private void InitializeChannel()
-        {
-            LoadConfig.LoadAllConfigs();
-        }
-
-        private void ReceiveTimer_Tick(object sender, EventArgs e)
-        {
-            // Implement the logic for the timer tick event here.
-            // For example, you can add code to perform periodic tasks.
-            MessageBox.Show("定时器触发事件已执行");
-        }
-
-        private void ReceiveTimer_Tick(object sender)
-        {
-            try
-            {
-                // 定时发送（举例：每次都发一条固定内容）
-                if (channelUdp != null && channelUdp.IsOpen)
-                {
-                    string autoSendMsg = "定时发送内容";
-                    byte[] sendBytes = Encoding.UTF8.GetBytes(autoSendMsg);
-                    channelUdp.Send(sendBytes);
-                }
-
-                // 定时接收
-                if (channelUdp != null && channelUdp.IsOpen)
-                {
-                    var datas = channelUdp.Recv();
-                    if (datas != null && datas.Count > 0)
-                    {
-                        StringBuilder batchMessages = new StringBuilder();
-                        foreach (var data in datas)
-                        {
-                            string msg = Encoding.UTF8.GetString(data);
-                            batchMessages.AppendLine($"收到: {msg}");
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("接收/发送数据出错: " + ex.Message);
-            }
-        }
-
-        #endregion 初始化配置
-
-        #region 按钮点击事件
+        #region 按钮
 
         private void buttonStartTest_Click(object sender, EventArgs e)
         {
+            LoadConfig.LoadAllConfigs();
             // 打开所有UDP通道
-            foreach (var channel in LoadConfig.Chs_UDP)
+            foreach (var channel in LoadConfig.GetAllChannels())
             {
                 if (!channel.IsOpen)
                 {
                     channel.Init();
+                    if (channel.Init() == 0)
+                    {
+                        channel.IsOpen = true; // 或者Init内部已设置
+                    }
                 }
             }
-
             // 启动定时器
-            if (this.receiveTimer == null)
+            if (this.ReceiveTimer == null)
             {
-                this.receiveTimer = new UltraHightAccurateTimer();
-                this.receiveTimer.Interval = 1000; // 1秒，可根据需要调整
-                this.receiveTimer.Tick += ReceiveTimer_Tick;
+                this.ReceiveTimer = new UltraHighAccurateTimer();
+                this.ReceiveTimer.Interval = 1000; // 1秒，可根据需要调整
             }
-            this.receiveTimer.Start();
+            this.ReceiveTimer.Start();
+            MessageBox.Show("通道已打开，定时器已启动");
         }
 
         // 停止测试按钮点击事件
 
         private void buttonEndTest_Click(object sender, EventArgs e)
         {
-            foreach (var channel in LoadConfig.Chs_UDP)
+            // 停止定时器
+            if (this.ReceiveTimer != null)
+            {
+                this.ReceiveTimer.Stop();
+            }
+            // 关闭所有UDP通道
+            foreach (var channel in LoadConfig.UdpChannels)
             {
                 if (channel.IsOpen)
                 {
                     channel.Close();
                 }
             }
-            MessageBox.Show("所有UDP通道已停止");
+            MessageBox.Show("定时器已停止，所有UDP通道已关闭");
         }
 
         private void buttonCloseLowerMachine_Click(object sender, EventArgs e)
@@ -145,6 +109,6 @@ namespace UDP.UI
             this.Close();
         }
 
-        #endregion 按钮点击事件
+        #endregion 按钮
     }
 }

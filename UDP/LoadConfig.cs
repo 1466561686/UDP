@@ -9,68 +9,39 @@ using UDP.Tools;
 
 namespace UDP
 {
-    internal class LoadConfig
+    public class LoadConfig
     {
+        public static string PathDir = AppDomain.CurrentDomain.BaseDirectory;
+        public static string FilePathConfigUdp = PathDir + @"ConfigFile\BUS\Device\UDP\UDPChannelConfig.csv";
         public static Dictionary<string, IChannel> Channels = new Dictionary<string, IChannel>();
-        public static List<Channel_UDP> Chs_UDP = new List<Channel_UDP>();
+        public static List<ChannelUdp> UdpChannels = new List<ChannelUdp>();
+
+        #region 清理，加载，打开，关闭
+
+        // 清理所有配置
+        private static void ClearAllConfigs()
+        {
+            UdpChannels.Clear();
+            Channels.Clear();
+        }
 
         // 统一加载配置的方法
         public static void LoadAllConfigs()
         {
             ClearAllConfigs();
-            LoadUDP();
-            ConfigBUS();
+            LoadUdp();
         }
 
-        public static void LoadUDP()
+        public static void LoadUdp()
         {
-            string FilePath_Config_UDP = @"C:\Users\Administrator\Desktop\UDP\bin\Debug\ConfigFile\BUS\Device\UDP\UDPChannelConfig.csv";
-            Chs_UDP = FileHelper.ReadUDPChannel(FilePath_Config_UDP);
-            if (!EmptyHelper.isEmpty(Chs_UDP))
+            UdpChannels = FileHelper.ReadUdpChannel(FilePathConfigUdp);
+            if (!EmptyHelper.isEmpty(UdpChannels))
             {
-                foreach (Channel_UDP ch in Chs_UDP)
+                foreach (ChannelUdp channel in UdpChannels)
                 {
-                    ch.DeviceType = EDeviceType.UDP;
-                    Channels.Add(ch.ChanId, ch);
+                    channel.DeviceType = EDeviceType.UDP;
+                    Channels.Add(channel.ChanId, channel);
                 }
-            }
-        }
-
-        // 加载UDP通道配置
-        public static void LoadUDP(int selectedChannel)
-        {
-            string FilePath_Config_UDP = @"C:\Users\Administrator\Desktop\UDP\bin\Debug\ConfigFile\BUS\Device\UDP\UDPChannelConfig.csv";
-            Chs_UDP = FileHelper.ReadUDPChannel(FilePath_Config_UDP);
-            if (!EmptyHelper.isEmpty(Chs_UDP))
-            {
-                foreach (Channel_UDP ch in Chs_UDP)
-                {
-                    ch.DeviceType = EDeviceType.UDP;
-                    Channels.Add(ch.ChanId, ch);
-                }
-            }
-        }
-
-        // 清理所有配置
-        private static void ClearAllConfigs()
-        {
-            Chs_UDP.Clear();
-            Channels.Clear();
-        }
-
-        // 初始化并测试所有通道
-        public static void InitAndTestChannels()
-        {
-            try
-            {
-                // 开启所有通道
-                TestAllChannels();
-            }
-            catch (Exception ex)
-            {
-                // 出错时关闭所有已打开的通道
-                Close();
-                throw new Exception("通道初始化和测试失败: " + ex.Message, ex);
             }
         }
 
@@ -81,64 +52,22 @@ namespace UDP
             Close();
 
             // BstCard.CardOpen();
-            if (!EmptyHelper.isEmpty(Chs_UDP))
+            if (!EmptyHelper.isEmpty(UdpChannels))
             {
-                foreach (Channel_UDP chan in Chs_UDP)
+                foreach (ChannelUdp chan in UdpChannels)
                 {
-                    chan.Init();
-                }
-            }
-        }
-
-        // 测试所有通道
-        private static void TestAllChannels()
-        {
-            foreach (var chan in Chs_UDP)
-            {
-                try
-                {
-                    if (!chan.IsOpen)
+                    if (chan.Init() == 0)
                     {
-                        throw new Exception("通道未成功打开");
+                        chan.IsOpen = true;
                     }
                 }
-                catch (Exception ex)
-                {
-                    throw new Exception($"测试通道 {chan.Name} 失败: {ex.Message}", ex);
-                }
             }
-        }
-
-        // 配置BUS
-        public static void ConfigBUS()
-        {
-            // 确保通道已加载
-            if (Chs_UDP.Count == 0)
-            {
-                throw new InvalidOperationException("请先加载通道配置");
-            }
-
-            // 创建接收ICD配置
-            var recvICD = new ICD_BUS
-            {
-                Name = "默认UDP接收通道",
-                Code = "UDP_RECV_01",
-                RecvChannels = new List<string> { "UDP_CH_01", "TEST_UDP_CH" }
-            };
-
-            // 创建发送ICD配置
-            var sendICD = new ICD_BUS
-            {
-                Name = "默认UDP发送通道",
-                Code = "UDP_SEND_01",
-                SendChannels = new List<string> { "UDP_CH_01", "TEST_UDP_CH" }
-            };
         }
 
         // 关闭所有通道
         public static void Close()
         {
-            foreach (var chan in Chs_UDP)
+            foreach (var chan in UdpChannels)
             {
                 try
                 {
@@ -151,5 +80,27 @@ namespace UDP
                 }
             }
         }
+
+        #endregion 清理，加载，打开，关闭
+
+        #region 获取集合中所有通道并返回
+
+        public static List<ChannelUdp> GetAllChannels()
+        {
+            foreach (ChannelUdp channel in UdpChannels)
+            {
+                if (!channel.IsOpen)
+                {
+                    // 仅在初始化成功后才设置IsOpen状态
+                    if (channel.Init() == 0)
+                    {
+                        channel.IsOpen = true;
+                    }
+                }
+            }
+            return UdpChannels; // 返回第一个通道，或根据需要返回其他通道
+        }
+
+        #endregion 获取集合中所有通道并返回
     }
 }

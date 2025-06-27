@@ -75,8 +75,8 @@
     <Compile Include="Model\LineInfo.cs" />
     <Compile Include="Model\MGrade.cs" />
     <Compile Include="Model\MUser.cs" />
-    <Compile Include="NetWork\Channel_UDP.cs" />
-    <Compile Include="timer\UltraHightAccurateTimer.cs" />
+    <Compile Include="NetWork\ChannelUdp.cs" />
+    <Compile Include="timer\UltraHighAccurateTimer.cs" />
     <Compile Include="Tools\ConvertHelper.cs" />
     <Compile Include="Tools\EmptyHelper.cs" />
     <Compile Include="Tools\FileHelper.cs" />

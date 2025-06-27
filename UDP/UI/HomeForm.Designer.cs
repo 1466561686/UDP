@@ -31,7 +31,7 @@
             this.buttonStartTest = new Sunny.UI.UIButton();
             this.buttonCloseLowerMachine = new Sunny.UI.UIButton();
             this.buttonEndTest = new Sunny.UI.UIButton();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabControl = new System.Windows.Forms.TabControl();
             this.SuspendLayout();
             // 
             // buttonStartTest
@@ -76,13 +76,13 @@
             this.buttonEndTest.TipsFont = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.buttonEndTest.Click += new System.EventHandler(this.buttonEndTest_Click);
             // 
-            // tabControl1
+            // tabControl
             // 
-            this.tabControl1.Location = new System.Drawing.Point(-4, 46);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1115, 597);
-            this.tabControl1.TabIndex = 47;
+            this.tabControl.Location = new System.Drawing.Point(-4, 46);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(1115, 597);
+            this.tabControl.TabIndex = 47;
             // 
             // HomeForm
             // 
@@ -92,7 +92,7 @@
             this.Controls.Add(this.buttonCloseLowerMachine);
             this.Controls.Add(this.buttonEndTest);
             this.Controls.Add(this.buttonStartTest);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.tabControl);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "HomeForm";
             this.Text = "Form1";
@@ -104,7 +104,7 @@
         private Sunny.UI.UIButton buttonStartTest;
         private Sunny.UI.UIButton buttonCloseLowerMachine;
         private Sunny.UI.UIButton buttonEndTest;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl tabControl;
     }
 }
 

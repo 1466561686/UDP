@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using UDP.Interface;
@@ -11,35 +11,43 @@ namespace UDP.Tools
 {
     public class FileHelper
     {
-        public static List<Channel_UDP> ReadUDPChannel(string filename)
+        public static List<ChannelUdp> ReadUdpChannel(string filePath)
         {
-            if (EmptyHelper.isEmpty(filename))
+            List<ChannelUdp> udpChannels = new List<ChannelUdp>();
+            if (!File.Exists(filePath))
+                return udpChannels;
+
+            string[] lines = File.ReadAllLines(filePath);
+            if (lines.Length <= 1)
+                return udpChannels;
+
+            for (int i = 1; i < lines.Length; i++)
             {
-                MessageBox.Show("文件名称不能为空");
-                return null;
-            }
-            List<List<string>> list = ReadCSVFile(filename);
-            if (EmptyHelper.isEmpty(list))
-            {
-                return null;
-            }
-            List<Channel_UDP> Channels = new List<Channel_UDP>();
-            for (int i = 0; i < list.Count; i++)
-            {
-                if (i > 0)
+                string line = lines[i].Trim();
+                if (string.IsNullOrEmpty(line))
+                    continue;
+
+                string[] parts = line.Split(',');
+                if (parts.Length < 6)
+                    continue;
+
+                if (int.TryParse(parts[0].Trim(), out int channelId) &&
+                    int.TryParse(parts[3].Trim(), out int localPort) &&
+                    int.TryParse(parts[5].Trim(), out int targetPort))
                 {
-                    Channel_UDP channel = new Channel_UDP();
-                    List<string> data = list[i];
-                    channel.Name = data[1];
-                    channel.ChanId = data[2];
-                    channel.LocalIP = IPAddress.Parse(data[3]); // Fix: Convert string to IPAddress
-                    channel.LocalPort = int.Parse(data[4]);
-                    channel.TargetIp = IPAddress.Parse(data[5]); // Fix: Convert string to IPAddress
-                    channel.TargetPort = int.Parse(data[6]);
-                    Channels.Add(channel);
+                    ChannelUdp udpChannel = new ChannelUdp
+                    {
+                        Name = parts[1].Trim(),
+                        Id = channelId,
+                        LocalIP = parts[2].Trim(),
+                        LocalPort = localPort,
+                        TargetIP = parts[4].Trim(),
+                        TargetPort = targetPort
+                    };
+                    udpChannels.Add(udpChannel);
                 }
             }
-            return Channels;
+            return udpChannels;
         }
 
         public static List<Config_BUS> ReadConfig_BUS(string filename)

@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace UDP.timer
 {
-    public class UltraHightAccurateTimer
+    public class UltraHighAccurateTimer
     {
         public delegate void ManualTimerEventHandler(object sender);
 
@@ -34,7 +34,7 @@ namespace UDP.timer
         [DllImport("Kernel32.dll")]
         private static extern bool QueryPerformanceFrequency(out long lpFrequency);
 
-        public UltraHightAccurateTimer()
+        public UltraHighAccurateTimer()
         {
             if (QueryPerformanceFrequency(out clockFrequency) == false)
             {
@@ -114,7 +114,7 @@ namespace UDP.timer
             }
         }
 
-        ~UltraHightAccurateTimer()
+        ~UltraHighAccurateTimer()
         {
             running = false;
             if (timerThread != null)

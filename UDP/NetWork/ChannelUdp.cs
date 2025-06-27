@@ -9,23 +9,23 @@ using System.Text;
 using System.Windows.Forms;
 using UDP.Interface;
 
-public class Channel_UDP : IChannel
+public class ChannelUdp : IChannel
 {
     public UdpClient Client;
-    public IPAddress LocalIP { get; set; }
+    public string LocalIP { get; set; }
     public int LocalPort { get; set; }
-    public IPAddress TargetIp { get; set; }
+    public string TargetIP { get; set; }
     public int TargetPort { get; set; }
 
-    public Channel_UDP(IPAddress localIP, int localPort, IPAddress targetIP, int targetPort)
+    public ChannelUdp(string localIP, int localPort, string targetIP, int targetPort)
     {
         LocalIP = localIP;
         LocalPort = localPort;
-        TargetIp = targetIP;
+        TargetIP = targetIP;
         TargetPort = targetPort;
     }
 
-    public Channel_UDP()
+    public ChannelUdp()
     {
     }
 
@@ -35,8 +35,8 @@ public class Channel_UDP : IChannel
         {
             if (!IsOpen)
             {
-                IPEndPoint e = new IPEndPoint(LocalIP, LocalPort);
-                Client = new UdpClient(e);
+                IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Parse(LocalIP), LocalPort);
+                Client = new UdpClient(localEndPoint);
                 IsOpen = true;
             }
         }
@@ -69,15 +69,15 @@ public class Channel_UDP : IChannel
         {
             return null;
         }
-        List<Byte[]> Datas = new List<byte[]>();
+        List<Byte[]> receivedDatas = new List<byte[]>();
         while (Client.Available > 0)
         {
-            IAsyncResult iar = Client.BeginReceive(null, null);
-            IPEndPoint ep = new IPEndPoint(0, 0);
-            Byte[] data = Client.EndReceive(iar, ref ep);
-            Datas.Add(data);
+            IAsyncResult asyncResult = Client.BeginReceive(null, null);
+            IPEndPoint remoteEndPoint = new IPEndPoint(0, 0);
+            Byte[] receivedData = Client.EndReceive(asyncResult, ref remoteEndPoint);
+            receivedDatas.Add(receivedData);
         }
-        return Datas;
+        return receivedDatas;
     }
 
     public override int Send(byte[] SendData)
@@ -90,7 +90,7 @@ public class Channel_UDP : IChannel
         {
             return -1;
         }
-        Client.BeginSend(SendData, SendData.Length, TargetIp.ToString(), TargetPort, null, 0);
+        Client.BeginSend(SendData, SendData.Length, new IPEndPoint(IPAddress.Parse(TargetIP), TargetPort), null, null);
         return 0;
     }
 }
