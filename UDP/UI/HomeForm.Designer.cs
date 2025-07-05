@@ -32,6 +32,7 @@
             this.buttonCloseLowerMachine = new Sunny.UI.UIButton();
             this.buttonEndTest = new Sunny.UI.UIButton();
             this.panel1 = new Sunny.UI.UIPanel();
+            this.tab_data = new System.Windows.Forms.TabControl();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -66,6 +67,7 @@
             // buttonEndTest
             // 
             this.buttonEndTest.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonEndTest.Enabled = false;
             this.buttonEndTest.Font = new System.Drawing.Font("微软雅黑", 12F);
             this.buttonEndTest.Location = new System.Drawing.Point(105, 15);
             this.buttonEndTest.Margin = new System.Windows.Forms.Padding(2);
@@ -89,20 +91,34 @@
             this.panel1.Margin = new System.Windows.Forms.Padding(7, 8, 7, 8);
             this.panel1.MinimumSize = new System.Drawing.Size(1, 1);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1775, 820);
+            this.panel1.Size = new System.Drawing.Size(1775, 55);
             this.panel1.TabIndex = 57;
             this.panel1.Text = null;
             this.panel1.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tab_data
+            // 
+            this.tab_data.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tab_data.Font = new System.Drawing.Font("微软雅黑", 10F);
+            this.tab_data.Location = new System.Drawing.Point(12, 55);
+            this.tab_data.Name = "tab_data";
+            this.tab_data.SelectedIndex = 0;
+            this.tab_data.Size = new System.Drawing.Size(1748, 753);
+            this.tab_data.TabIndex = 58;
             // 
             // HomeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1772, 820);
+            this.Controls.Add(this.tab_data);
             this.Controls.Add(this.panel1);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "HomeForm";
-            this.Text = "Form1";
+            this.Text = "UDP通信测试工具";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -113,6 +129,7 @@
         private Sunny.UI.UIButton buttonCloseLowerMachine;
         private Sunny.UI.UIButton buttonEndTest;
         private Sunny.UI.UIPanel panel1;
+        private System.Windows.Forms.TabControl tab_data;
     }
 }
 
